@@ -9,7 +9,7 @@
         <div class="popular container">
             <div class="popular__posts">
                 @foreach($posts as $post)
-                    <a href="/post/{{$post->id}}">
+                    <a href="{{route('post', $post->id)}}">
                         <article class="popular__post post">
                             <header class="post__header">
                                 <h2>{{$post->title}}</h2>
@@ -28,7 +28,7 @@
                                         </div>
                                         <div class="post__info">
                                             <b class="post__author-name">{{$post->name}}</b>
-                                            <time class="post__time" datetime="{{$post->created_at}}">{{date_format(date_create($post->created_at), 'd M Y')}}</time>
+                                            <time class="post__time" datetime="{{$post->created_at}}">{{date_format(date_create($post->created_at), 'd M Y H:i')}}</time>
                                         </div>
                                     </a>
                                 </div>
@@ -41,7 +41,7 @@
                                             <svg class="post__indicator-icon post__indicator-icon--like-active" width="20" height="17">
                                                 <use xlink:href="#icon-heart-active"></use>
                                             </svg>
-                                            <span>{{!$post->like_count ? 0 : $post->like_coun}}</span>
+                                            <span>{{!$post->like_count ? 0 : $post->like_count}}</span>
                                             <span class="visually-hidden">количество лайков</span>
                                         </a>
                                         <a class="post__indicator post__indicator--comments button" href="#" title="Комментарии">

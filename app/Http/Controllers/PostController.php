@@ -32,16 +32,16 @@ class PostController extends Controller
         ]);
     }
 
-    // public function getPost($id) {
-    //     $user = Auth::user();
-    //     $postService = new PostService();
-    //     $post = $postService->getPost($id);
+    public function getPost($id) {
+        $user = Auth::user();
+        $postService = new PostService();
+        $posts = $postService->getPost($id);
 
-    //     return view('post', [
-    //         'post' => $post,
-    //         'user' => $user
-    //     ]);
-    // }
+        return view('post', [
+            'posts' => $posts,
+            'user' => $user
+        ]);
+    }
 
     public function mainPage() {
         $user = Auth::user();
@@ -68,6 +68,6 @@ class PostController extends Controller
     public function submit(PostRequest $req) {
         $postService = new PostService();
         $postService->addPost($req);
-        return redirect()->route('posts');
+        return redirect()->route('main');
     }
 }

@@ -40,7 +40,7 @@
                             <svg class="post__indicator-icon post__indicator-icon--like-active" width="20" height="17">
                                 <use xlink:href="#icon-heart-active"></use>
                             </svg>
-                            <span>{{!$post->like_count ? 0 : $post->like_coun}}</span>
+                            <span>{{!$post->like_count ? 0 : $post->like_count}}</span>
                             <span class="visually-hidden">количество лайков</span>
                         </a>
                         </div>

@@ -27,7 +27,6 @@ Route::get('/auth', function () {
     return view('auth');
 })->middleware('guest')->name('auth');
 
-Route::get('/posts', 'PostController@getPosts')->name('posts');
 Route::get('/post/{id}', 'PostController@getPost')->name('post');
 
 Route::post('/registration/submit', 'RegistrationController@submit')->middleware('guest')->name('registration-form');
