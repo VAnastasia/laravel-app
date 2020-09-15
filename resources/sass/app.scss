@@ -6,3 +6,40 @@
 .page__title--adding-post {
     margin-bottom: 30px;
 }
+
+.header__profile-avatar {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+}
+
+.comments__picture {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+}
+
+.profile__posts {
+    margin: 50px auto;
+}
+
+.post__author-avatar {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    margin-right: 25px;
+
+    &::before {
+        display: none;
+    }
+}
+
+.post-photo__image {
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+}
+
+.post__main p {
+    min-height: 280px;
+}

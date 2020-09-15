@@ -15,8 +15,7 @@
     @include('modules.header')
     @yield('content')
     @include('modules.footer')
-    {{-- <script src="/js/dropzone.js"></script>
-    <script src="/js/dropzone-settings.js"></script> --}}
+
     <script src="/js/main.js"></script>
     <script src="/js/app.js"></script>
 </body>

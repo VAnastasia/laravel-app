@@ -12,7 +12,7 @@
             </li> --}}
             <li class="sorting__item">
                 <a class="sorting__link" href="#">
-                    <span>Лайки</span>
+                    <span>Рейтинг</span>
                     <svg class="sorting__icon" width="10" height="12">
                         <use xlink:href="#icon-sort"></use>
                     </svg>
