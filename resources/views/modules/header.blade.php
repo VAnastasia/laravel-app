@@ -28,11 +28,13 @@
                 <span class="visually-hidden">Популярный контент</span>
             </a>
             </li>
-            <li class="header__my-page header__my-page--feed">
-            <a class="header__page-link" href="feed.html" title="Моя лента">
-                <span class="visually-hidden">Моя лента</span>
-            </a>
-            </li>
+            @if ($user ?? '')
+                <li class="header__my-page header__my-page--feed">
+                    <a class="header__page-link" href="{{route('posts')}}" title="Мои посты">
+                        <span class="visually-hidden">Мои посты</span>
+                    </a>
+                </li>
+            @endif
         </ul>
         <ul class="header__user-nav">
             @if($user ?? '')

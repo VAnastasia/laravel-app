@@ -5,13 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Requests\PostRequest;
+use App\Http\Requests\EditPostRequest;
 use App\Services\PostService;
+use App\Services\CommentService;
 
 class PostController extends Controller
 {
-    public function __construct() {
-        $this->middleware('auth');
-    }
 
     public function getProfile() {
         $user = Auth::user();
@@ -32,19 +31,44 @@ class PostController extends Controller
         ]);
     }
 
-    public function getPost($id) {
+    public function getUserPosts() {
         $user = Auth::user();
         $postService = new PostService();
-        $posts = $postService->getPost($id);
+        $posts = $postService->getUserPosts();
 
-        return view('post', [
+        return view('main', [
             'posts' => $posts,
             'user' => $user
         ]);
     }
 
-    public function mainPage() {
+    public function getPost($id) {
         $user = Auth::user();
+        $commentService = new CommentService();
+        $comments = $commentService->getComments($id);
+        $postService = new PostService();
+        $posts = $postService->getPost($id);
+
+        return view('post', [
+            'posts' => $posts,
+            'user' => $user,
+            'comments' => $comments
+        ]);
+    }
+
+    public function editPost($id) {
+        $user = Auth::user();
+        $postService = new PostService();
+        $posts = $postService->getPost($id);
+
+        return view('edit', [
+            'post' => $posts[0],
+            'user' => $user
+        ]);
+    }
+
+    public function mainPage() {
+        $user = Auth::user() ?? '';
         $postService = new PostService();
         $posts = $postService->getPosts();
 
@@ -68,6 +92,18 @@ class PostController extends Controller
     public function submit(PostRequest $req) {
         $postService = new PostService();
         $postService->addPost($req);
+        return redirect()->route('main');
+    }
+
+    public function savePost($id, EditPostRequest $req) {
+        $postService = new PostService();
+        $postService->savePost($id, $req);
+        return redirect()->route('main');
+    }
+
+    public function publicPost($id) {
+        $postService = new PostService();
+        $postService->publicPost($id);
         return redirect()->route('main');
     }
 }

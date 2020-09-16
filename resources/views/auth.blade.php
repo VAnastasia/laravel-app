@@ -39,7 +39,7 @@
                 @endif
             </div>
 
-            <button class="registration__submit button button--main" type="submit">Отправить</button>
+            <button class="registration__submit button button--main" type="submit">Войти</button>
             </form>
         </section>
     </main>

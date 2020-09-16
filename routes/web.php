@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', 'PostController@mainPage')->name('main');
 
 Route::get('/popular', 'PostController@popular')->name('popular');
+Route::get('/posts', 'PostController@getUserPosts')->name('posts');
 
 Route::get('/add', 'PostController@getProfile')->middleware('auth')->name('add');
 
@@ -28,10 +29,14 @@ Route::get('/auth', function () {
 })->middleware('guest')->name('auth');
 
 Route::get('/post/{id}', 'PostController@getPost')->name('post');
+Route::get('/edit/{id}', 'PostController@editPost')->name('post-edit');
+Route::get('/public/{id}', 'PostController@publicPost')->name('post-public');
 
 Route::post('/registration/submit', 'RegistrationController@submit')->middleware('guest')->name('registration-form');
 Route::post('/auth/signin', 'AuthController@signin')->middleware('guest')->name('signin');
 Route::get('/auth/logout', 'AuthController@logout')->name('logout');
 
 Route::post('/add/submit', 'PostController@submit')->name('post-submit');
+Route::post('/save/{id}', 'PostController@savePost')->name('post-save');
 
+Route::post('/comment/submit', 'CommentController@submit')->name('comment-submit');

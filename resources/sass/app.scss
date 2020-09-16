@@ -43,3 +43,20 @@
 .post__main p {
     min-height: 280px;
 }
+
+.post__status {
+    display: block;
+    padding: 10px 42px;
+}
+
+p.post__description {
+    min-height: auto;
+}
+
+.post__link {
+    text-decoration: underline;
+}
+
+.page__main {
+    flex-grow: 1;
+}

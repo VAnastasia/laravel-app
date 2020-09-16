@@ -9,6 +9,7 @@
         <div class="popular container">
             <div class="popular__posts">
                 @foreach($posts as $post)
+                {{-- {{dd($post)}} --}}
                     <a href="{{route('post', $post->id)}}">
                         <article class="popular__post post">
                             <header class="post__header">
@@ -28,7 +29,7 @@
                                         </div>
                                         <div class="post__info">
                                             <b class="post__author-name">{{$post->name}}</b>
-                                            <time class="post__time" datetime="{{$post->created_at}}">{{date_format(date_create($post->created_at), 'd M Y H:i')}}</time>
+                                            <time class="post__time" datetime="{{$post->updated_at}}">{{date_format(date_create($post->updated_at), 'd M Y H:i')}}</time>
                                         </div>
                                     </a>
                                 </div>
@@ -48,7 +49,7 @@
                                             <svg class="post__indicator-icon" width="19" height="17">
                                                 <use xlink:href="#icon-comment"></use>
                                             </svg>
-                                            <span>0</span>
+                                            <span>{{!$post->comment_count ? 0 : $post->comment_count}}</span>
                                             <span class="visually-hidden">количество комментариев</span>
                                         </a>
                                     </div>
