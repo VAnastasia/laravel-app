@@ -4,12 +4,11 @@
 
      <section class="page__main page__main--popular">
         <div class="container">
-            <h1 class="page__title page__title--popular">Все посты</h1>
+            <h1 class="page__title page__title--popular">{{$title ?? 'Все посты'}}</h1>
         </div>
         <div class="popular container">
             <div class="popular__posts">
                 @foreach($posts as $post)
-                {{-- {{dd($post)}} --}}
                     <a href="{{route('post', $post->id)}}">
                         <article class="popular__post post">
                             <header class="post__header">

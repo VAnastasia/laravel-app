@@ -40,3 +40,7 @@ Route::post('/add/submit', 'PostController@submit')->name('post-submit');
 Route::post('/save/{id}', 'PostController@savePost')->name('post-save');
 
 Route::post('/comment/submit', 'CommentController@submit')->name('comment-submit');
+Route::get('/comment/delete/{id}', 'CommentController@deleteComment')->name('comment-delete');
+
+Route::get('/tag/{tag}', 'PostController@getTagPosts')->name('tag-posts');
+

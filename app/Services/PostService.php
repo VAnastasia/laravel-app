@@ -16,6 +16,9 @@ class PostService {
         $post->like_count = rand(0, 1000);
 
         $post->save();
+
+        $tag_service = new TagService();
+        return $tag_service->addTag(explode(' ', $req->input('tags')), $post->id);
     }
 
     public function savePost ($id, $req) {
@@ -35,16 +38,15 @@ class PostService {
             ]);
     }
 
-    public function incrementCommentCount ($id) {
-        $comment_count = DB::table('posts')
-            ->where('id', '=', $id)
-            ->select('posts.comment_count')
-            ->get();
+    public function getCommentCount ($id) {
+        $comment_count = DB::table('comments')
+            ->where('post_comment_id', '=', $id)
+            ->count();
 
         return DB::table('posts')
             ->where('id', '=', $id)
             ->update([
-                'comment_count' => $comment_count[0]->comment_count + 1
+                'comment_count' => $comment_count
             ]);
     }
 

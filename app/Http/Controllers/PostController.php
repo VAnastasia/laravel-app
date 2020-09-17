@@ -8,6 +8,8 @@ use App\Http\Requests\PostRequest;
 use App\Http\Requests\EditPostRequest;
 use App\Services\PostService;
 use App\Services\CommentService;
+use App\Services\TagService;
+
 
 class PostController extends Controller
 {
@@ -44,15 +46,36 @@ class PostController extends Controller
 
     public function getPost($id) {
         $user = Auth::user();
+
         $commentService = new CommentService();
         $comments = $commentService->getComments($id);
+
         $postService = new PostService();
         $posts = $postService->getPost($id);
+        $postService->getCommentCount($id);
+
+        $tagService = new TagService();
+        $tags = $tagService->getPostTags($id);
 
         return view('post', [
             'posts' => $posts,
             'user' => $user,
-            'comments' => $comments
+            'comments' => $comments,
+            'tags' => $tags
+        ]);
+    }
+
+    public function getTagPosts($tag) {
+        $user = Auth::user();
+
+        $tagService = new TagService();
+        $posts = $tagService->getTagPosts($tag);
+        $tagName = $tagService->getTag($tag)[0]->tag_name;
+
+        return view('main', [
+            'posts' => $posts,
+            'user' => $user,
+            'title' => 'Все посты по тэгу ' . $tagName
         ]);
     }
 

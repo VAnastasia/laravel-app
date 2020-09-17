@@ -17,13 +17,19 @@ class CommentService {
         $comment->save();
 
         $postService = new PostService();
-        $postService->incrementCommentCount($req->input('post-id'));
+        $postService->getCommentCount($req->input('post-id'));
+    }
+
+    public function deleteComment ($comment_id) {
+        return DB::table('comments')
+        ->where('comment_id', '=', $comment_id)
+        ->delete();
     }
 
     public function getComments ($post_id) {
         return DB::table('comments')
             ->leftJoin('users', 'users.id', '=', 'comments.author_comment_id')
-            ->select('comments.comment_id', 'comments.comment_text', 'comments.like_comment_count', 'comments.updated_at', 'users.name', 'users.avatar')
+            ->select('comments.comment_id', 'comments.comment_text', 'comments.like_comment_count', 'comments.updated_at', 'users.id as user_id', 'users.name', 'users.avatar')
             ->where('comments.post_comment_id', '=', $post_id)
             ->orderBy('updated_at', 'asc')
             ->get();

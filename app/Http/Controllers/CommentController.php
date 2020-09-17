@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Requests\CommentRequest;
 use App\Services\CommentService;
+use App\Services\PostService;
 
 class CommentController extends Controller
 {
@@ -21,6 +22,13 @@ class CommentController extends Controller
     public function getComments($post_id) {
         $commentService = new CommentService();
         $commentService->getComments($post_id);
+        return redirect()->back();
+    }
+
+    public function deleteComment($id) {
+        $commentService = new CommentService();
+        $commentService->deleteComment($id);
+
         return redirect()->back();
     }
 }

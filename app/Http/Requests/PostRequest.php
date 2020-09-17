@@ -26,6 +26,7 @@ class PostRequest extends FormRequest
         return [
             'title' => 'required',
             'description' => 'required',
+            'tags' => 'required',
             'image' => 'required|mimes:jpeg,jpg'
         ];
     }
@@ -35,7 +36,8 @@ class PostRequest extends FormRequest
             'title.required' => 'Введите заголовок',
             'description.required' => 'Введите текст поста',
             'image.required' => 'Загрузите фото',
-            'image.mimes' => 'Загрузите фото в формате jpeg или jpg'
+            'image.mimes' => 'Загрузите фото в формате jpeg или jpg',
+            'tags.required' => 'Введите теги',
         ];
     }
 }
