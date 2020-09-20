@@ -48,12 +48,10 @@ class PostController extends Controller
         $user = Auth::user();
         $post = Post::find($id);
         $postService = new PostService();
-        $isLike = $postService->getLike($user->id, $id);
 
         return view('post', [
             'post' => $post,
             'user' => $user,
-            'is_like' => $isLike
         ]);
     }
 

@@ -41,7 +41,8 @@ class PostService {
         $user = Auth::user();
         $post = Post::find($id);
 
-        $is_like = PostService::getLike($post->id, $user->id);
+        $is_like = in_array($post->id, DB::table('user_post')->where('user_id', $user->id)->pluck('post_id')->toArray());
+
         if (!$is_like) {
             $post->increment('like_count');
 

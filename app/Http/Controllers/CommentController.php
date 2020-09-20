@@ -46,4 +46,10 @@ class CommentController extends Controller
 
         return redirect()->route('post', Comment::find($id)->post->id);
     }
+
+    public function likeComment($id) {
+        $commentService = new CommentService();
+        $commentService->likeComment($id);
+        return redirect()->back();
+    }
 }

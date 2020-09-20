@@ -43,11 +43,12 @@
                         <div class="post__buttons">
                         <a class="post__indicator post__indicator--likes button" href="{{route('like-post', $post->id)}}" title="Лайк">
                             <svg class="post__indicator-icon" width="20" height="17">
-                            @if($is_like ?? '')
+                                <use xlink:href="#icon-heart"></use>
+                            {{-- @if($is_like ?? '')
                                 <use xlink:href="#icon-heart-active"></use>
                             @else
                                 <use xlink:href="#icon-heart"></use>
-                            @endif
+                            @endif --}}
                             </svg>
                             <span>{{!$post->like_count ? 0 : $post->like_count}}</span>
                             <span class="visually-hidden">количество лайков</span>
@@ -72,7 +73,7 @@
                                         </div>
                                         <div class="comments__info">
                                             <div class="comments__name-wrapper">
-                                                <a class="comments__user-name" href="#">
+                                                <a class="comments__user-name">
                                                     <span>{{$comment->user->name}}</span>
                                                 </a>
                                                 <time class="comments__time" datetime="{{$comment->updated_at}}">{{$comment->updated_at}}</time>
@@ -98,7 +99,7 @@
                                             @endif
 
                                             <div class="comments__controls">
-                                                <a class="post__indicator post__indicator--likes button" href="#" title="Лайк">
+                                                <a class="post__indicator post__indicator--likes button" href="{{route('like-comment', $comment->id)}}" title="Лайк">
                                                     <svg class="post__indicator-icon" width="20" height="17">
                                                         <use xlink:href="#icon-heart"></use>
                                                     </svg>
