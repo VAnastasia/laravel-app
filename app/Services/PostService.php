@@ -33,4 +33,30 @@ class PostService {
             ]);
     }
 
+    public function getLike ($user_id, $post_id) {
+        return in_array($post_id, DB::table('user_post')->where('user_id', $user_id)->pluck('post_id')->toArray());
+    }
+
+    public function likePost ($id) {
+        $user = Auth::user();
+        $post = Post::find($id);
+
+        $is_like = PostService::getLike($post->id, $user->id);
+        if (!$is_like) {
+            $post->increment('like_count');
+
+            DB::table('user_post')->insert([
+                'user_id' => $user->id,
+                'post_id' => $id
+            ]);
+        } else {
+            $post->decrement('like_count');
+
+            DB::table('user_post')->where([
+                'user_id' => $user->id,
+                'post_id' => $id
+            ])->delete();
+        }
+    }
+
 }

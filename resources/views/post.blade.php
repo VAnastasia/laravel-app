@@ -3,7 +3,7 @@
 @section('content')
     <main class="page__main page__main--profile">
         <section class="profile__posts tabs__content tabs__content--active">
-        <h2 class="visually-hidden">Публикации</h2>
+        <h2 class="visually-hidden">Пост</h2>
             <div class="profile__tab-content">
                 <article class="profile__post post post-text">
                     <header class="post__header">
@@ -19,7 +19,7 @@
                     </header>
                     <div class="post__main">
                     <h2>{{$post->title}}</h2>
-                    @if ($user)
+                    @if (isset($user) && $user->id === $post->user->id)
                         @if ($post->status)
                             <span class="post__status">Статус: опубликован</span>
                         @else
@@ -41,12 +41,13 @@
                     <footer class="post__footer">
                     <div class="post__indicators">
                         <div class="post__buttons">
-                        <a class="post__indicator post__indicator--likes button" href="#" title="Лайк">
+                        <a class="post__indicator post__indicator--likes button" href="{{route('like-post', $post->id)}}" title="Лайк">
                             <svg class="post__indicator-icon" width="20" height="17">
-                                <use xlink:href="#icon-heart"></use>
-                            </svg>
-                            <svg class="post__indicator-icon post__indicator-icon--like-active" width="20" height="17">
+                            @if($is_like ?? '')
                                 <use xlink:href="#icon-heart-active"></use>
+                            @else
+                                <use xlink:href="#icon-heart"></use>
+                            @endif
                             </svg>
                             <span>{{!$post->like_count ? 0 : $post->like_count}}</span>
                             <span class="visually-hidden">количество лайков</span>
@@ -88,7 +89,7 @@
                                                     {{$comment->text}}
                                                 </p>
 
-                                                @if ($comment->user->id == $user->id)
+                                                @if ($user && $comment->user->id == $user->id)
                                                     <div class="comments__controls">
                                                         <a href="{{route('comment-edit', $comment->id)}}">Редактировать комментарий</a><br>
                                                         <a href="{{route('comment-delete', $comment->id)}}">Удалить комментарий</a>

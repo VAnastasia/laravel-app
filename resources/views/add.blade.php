@@ -47,7 +47,7 @@
                     @endif
                   </div>
                   <div class="adding-post__buttons">
-                    <button class="adding-post__submit button button--main" type="submit">Опубликовать</button>
+                    <button class="adding-post__submit button button--main" type="submit">Сохранить</button>
                     <a class="adding-post__close" href="{{route('main')}}">Закрыть</a>
                   </div>
                 </form>

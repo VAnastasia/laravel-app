@@ -15,34 +15,51 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'PostController@show')->name('main');
 
-Route::get('/popular', 'PostController@popular')->name('popular');
-Route::get('/posts', 'PostController@getUserPosts')->name('posts');
+Route::group(['prefix' => 'registration'],
+    function () {
+        Route::get('/', function () {
+            return view('registration');
+        })->middleware('guest')->name('registration');
 
-Route::get('/add', 'PostController@create')->middleware('auth')->name('add');
+        Route::post('/submit', 'RegistrationController@submit')->middleware('guest')->name('registration-form');
+    }
+);
 
-Route::get('/registration', function () {
-    return view('registration');
-})->middleware('guest')->name('registration');
 
-Route::get('/auth', function () {
-    return view('auth');
-})->middleware('guest')->name('auth');
+Route::group(['prefix' => 'auth'],
+    function () {
+        Route::get('/', function () {
+                return view('auth');
+            })->middleware('guest')->name('auth');
+        Route::post('/signin', 'AuthController@signin')->middleware('guest')->name('signin');
+        Route::get('/logout', 'AuthController@logout')->name('logout');
+    }
+);
 
-Route::get('/post/{id}', 'PostController@getPost')->name('post');
-Route::get('/edit/{id}', 'PostController@editPost')->name('post-edit');
-Route::get('/public/{id}', 'PostController@publicPost')->name('post-public');
+Route::group(['prefix' => 'post'],
+    function () {
+        Route::get('/popular', 'PostController@popular')->name('popular');
+        Route::get('/all', 'PostController@getUserPosts')->name('posts');
+        Route::get('/add', 'PostController@create')->middleware('auth')->name('add');
+        Route::post('/add/submit', 'PostController@submit')->name('post-submit');
+        Route::get('/{id}', 'PostController@getPost')->name('post');
+        Route::get('/edit/{id}', 'PostController@editPost')->name('post-edit');
+        Route::get('/public/{id}', 'PostController@publicPost')->name('post-public');
+        Route::post('/save/{id}', 'PostController@savePost')->name('post-save');
+        Route::get('/like/{id}', 'PostController@likePost')->name('like-post');
+    }
+);
 
-Route::post('/registration/submit', 'RegistrationController@submit')->middleware('guest')->name('registration-form');
-Route::post('/auth/signin', 'AuthController@signin')->middleware('guest')->name('signin');
-Route::get('/auth/logout', 'AuthController@logout')->name('logout');
-
-Route::post('/add/submit', 'PostController@submit')->name('post-submit');
-Route::post('/save/{id}', 'PostController@savePost')->name('post-save');
-
-Route::post('/comment/submit', 'CommentController@submit')->name('comment-submit');
-Route::get('/comment/delete/{id}', 'CommentController@deleteComment')->name('comment-delete');
-Route::get('/comment/edit/{id}', 'CommentController@editComment')->name('comment-edit');
-Route::post('/comment/save/{id}', 'CommentController@saveComment')->name('comment-save');
+Route::group(['prefix' => 'comment'],
+    function () {
+        Route::post('/submit', 'CommentController@submit')->name('comment-submit');
+        Route::get('/delete/{id}', 'CommentController@deleteComment')->name('comment-delete');
+        Route::get('/edit/{id}', 'CommentController@editComment')->name('comment-edit');
+        Route::post('/save/{id}', 'CommentController@saveComment')->name('comment-save');
+    }
+);
 
 Route::get('/tag/{tag}', 'PostController@getTagPosts')->name('tag-posts');
+Route::get('/like/{id}', 'PostController@likePost')->name('like-post');
+
 

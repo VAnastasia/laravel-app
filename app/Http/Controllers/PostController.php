@@ -47,10 +47,13 @@ class PostController extends Controller
     public function getPost($id) {
         $user = Auth::user();
         $post = Post::find($id);
+        $postService = new PostService();
+        $isLike = $postService->getLike($user->id, $id);
 
         return view('post', [
             'post' => $post,
             'user' => $user,
+            'is_like' => $isLike
         ]);
     }
 
@@ -103,5 +106,11 @@ class PostController extends Controller
             'status' => true,
         ]);
         return redirect()->route('main');
+    }
+
+    public function likePost($id) {
+        $postService = new PostService();
+        $postService->likePost($id);
+        return redirect()->back();
     }
 }
