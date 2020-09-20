@@ -12,37 +12,21 @@ class TagService {
             $tagModel = new Tag();
 
             $newTag = $tagModel->firstOrCreate(
-                ['tag_name' => $tag],
-                ['tag_name' => $tag, 'tag_slug' => Str::slug($tag, '_', 'en')
-            ]);
+                ['name' => $tag],
+                ['name' => $tag]
+            );
 
-            DB::table('tagrels')->insert([
+            DB::table('post_tag')->insert([
                 'post_id' => $post_id,
-                'tag_id' => $newTag->tag_id ?? 1
+                'tag_id' => $newTag->id
             ]);
         }
     }
 
-    public function getPostTags ($post_id) {
-        return DB::table('tagrels')
-            ->leftJoin('tags', 'tagrels.tag_id', '=', 'tags.tag_id')
-            ->select('tags.tag_name', 'tags.tag_slug', 'tags.tag_id')
-            ->where('post_id', '=', $post_id)
-            ->get();
-    }
+    public function deleteTags ($tags, $post_id) {
 
-    public function getTagPosts ($tag_id) {
-        return DB::table('tagrels')
-            ->where('tagrels.tag_id', '=', $tag_id)
-            ->leftJoin('posts', 'tagrels.post_id', '=', 'posts.id')
-            ->leftJoin('users', 'posts.author_id', '=', 'users.id')
-            ->select('posts.id', 'posts.title', 'posts.description', 'posts.image', 'posts.like_count', 'posts.comment_count', 'posts.updated_at', 'posts.status', 'users.name', 'users.avatar')
-            ->where('posts.status', '=', true)
-            ->get();
-    }
-
-    public function getTag ($id) {
-        $tag = new Tag();
-        return $tag->where('tag_id', '=', $id)->get();
+        foreach ($tags as $tag) {
+            DB::table('post_tag')->where('post_id', '=', $post_id)->delete();
+        }
     }
 }

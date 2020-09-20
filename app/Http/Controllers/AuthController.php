@@ -9,14 +9,6 @@ use App\Models\User;
 
 class AuthController extends Controller
 {
-    // public function getProfile() {
-    //     $user = Auth::user();
-
-    //     return view('main', [
-    //         'user' => $user
-    //     ]);
-    // }
-
     public function signin(AuthRequest $req) {
         if(!Auth::attempt($req->only(['email', 'password']))) {
             return redirect()->back();

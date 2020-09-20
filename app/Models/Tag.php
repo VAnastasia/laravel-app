@@ -6,5 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Tag extends Model
 {
-    protected $fillable = array('tag_name', 'tag_slug');
+    public function posts () {
+        return $this->belongsToMany('App\Models\Post');
+    }
+
+    protected $fillable = ['name'];
 }

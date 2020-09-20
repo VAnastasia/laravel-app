@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class UserSeeder extends Seeder
 {
@@ -11,21 +12,34 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        $users = [
-            [
-                'id' => 1,
-                'name' => 'admin',
-                'avatar' => 'uploads/zGIVERj3E1wdEGDMH1mE6oY39uuE4M9m2XNBm8O9.jpeg',
-                'email' => 'mail@mail.ru',
-                'password' => bcrypt('12345678')
-            ],
-            [
-                'id' => 2,
-                'name' => 'test-user',
-                'avatar' => 'uploads/XubhcJxLs25FF52379aMpPiAwQxPkPi4o7XTqT9d.jpeg',
-                'email' => 'user2@mail.ru',
-                'password' => bcrypt('12345678')
-            ]
-        ];
+        factory(App\Models\User::class, 50)->create()
+        ->each(function ($user) {
+            factory(App\Models\Post::class, rand(1, 5))->create(
+                [
+                    'user_id' => $user->id
+                ]
+            )
+            ->each(function ($post) {
+                $tag_ids = range(1, 7);
+                shuffle($tag_ids);
+                $assingments = array_slice($tag_ids, 0, rand(0, 5));
+                foreach($assingments as $tag_id) {
+                    DB::table('post_tag')
+                        ->insert(
+                            [
+                                'post_id' => $post->id,
+                                'tag_id' => $tag_id,
+                                'created_at' => Now(),
+                                'updated_at' => Now()
+                            ]
+                        );
+                }
+
+                factory(App\Models\Comment::class, rand(0, 5))->create([
+                    'user_id' => rand(1, 50),
+                    'post_id' => $post->id
+                ]);
+            });
+        });
     }
 }

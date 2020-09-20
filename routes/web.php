@@ -13,12 +13,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', 'PostController@mainPage')->name('main');
+Route::get('/', 'PostController@show')->name('main');
 
 Route::get('/popular', 'PostController@popular')->name('popular');
 Route::get('/posts', 'PostController@getUserPosts')->name('posts');
 
-Route::get('/add', 'PostController@getProfile')->middleware('auth')->name('add');
+Route::get('/add', 'PostController@create')->middleware('auth')->name('add');
 
 Route::get('/registration', function () {
     return view('registration');
@@ -41,6 +41,8 @@ Route::post('/save/{id}', 'PostController@savePost')->name('post-save');
 
 Route::post('/comment/submit', 'CommentController@submit')->name('comment-submit');
 Route::get('/comment/delete/{id}', 'CommentController@deleteComment')->name('comment-delete');
+Route::get('/comment/edit/{id}', 'CommentController@editComment')->name('comment-edit');
+Route::post('/comment/save/{id}', 'CommentController@saveComment')->name('comment-save');
 
 Route::get('/tag/{tag}', 'PostController@getTagPosts')->name('tag-posts');
 

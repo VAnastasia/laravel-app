@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\CommentRequest;
 use App\Services\CommentService;
 use App\Services\PostService;
+use App\Models\Comment;
 
 class CommentController extends Controller
 {
@@ -19,16 +20,30 @@ class CommentController extends Controller
         return redirect()->back();
     }
 
-    public function getComments($post_id) {
-        $commentService = new CommentService();
-        $commentService->getComments($post_id);
+    public function deleteComment($id) {
+        Comment::find($id)->delete();
+
         return redirect()->back();
     }
 
-    public function deleteComment($id) {
-        $commentService = new CommentService();
-        $commentService->deleteComment($id);
+    public function editComment($id) {
+        $user = Auth::user();
+        $comment = Comment::find($id);
+        $post = Comment::find($id)->post;
 
-        return redirect()->back();
+        return view('post', [
+            'post' => $post,
+            'user' => $user,
+            'comment_edit' => $comment
+        ]);
+        // return redirect()->back();
+    }
+
+    public function saveComment($id, CommentRequest $req) {
+        Comment::find($id)->update([
+            'text' => $req->input('text')
+        ]);
+
+        return redirect()->route('post', Comment::find($id)->post->id);
     }
 }

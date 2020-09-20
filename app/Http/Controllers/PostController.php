@@ -10,11 +10,23 @@ use App\Services\PostService;
 use App\Services\CommentService;
 use App\Services\TagService;
 
+use App\Models\Post;
+use App\Models\User;
+use App\Models\Tag;
 
 class PostController extends Controller
 {
+    public function show () {
+        $user = Auth::user();
+        $posts = Post::all()->where('status', '=', true)->sortByDesc('updated_at');
 
-    public function getProfile() {
+        return view('main', [
+            'posts' => $posts,
+            'user' => $user,
+        ]);
+    }
+
+    public function create () {
         $user = Auth::user();
 
         return view('add', [
@@ -22,21 +34,9 @@ class PostController extends Controller
         ]);
     }
 
-    public function getPosts() {
-        $user = Auth::user();
-        $postService = new PostService();
-        $posts = $postService->getPosts();
-
-        return view('post', [
-            'posts' => $posts,
-            'user' => $user
-        ]);
-    }
-
     public function getUserPosts() {
         $user = Auth::user();
-        $postService = new PostService();
-        $posts = $postService->getUserPosts();
+        $posts = User::find($user->id)->posts;
 
         return view('main', [
             'posts' => $posts,
@@ -46,31 +46,18 @@ class PostController extends Controller
 
     public function getPost($id) {
         $user = Auth::user();
-
-        $commentService = new CommentService();
-        $comments = $commentService->getComments($id);
-
-        $postService = new PostService();
-        $posts = $postService->getPost($id);
-        $postService->getCommentCount($id);
-
-        $tagService = new TagService();
-        $tags = $tagService->getPostTags($id);
+        $post = Post::find($id);
 
         return view('post', [
-            'posts' => $posts,
+            'post' => $post,
             'user' => $user,
-            'comments' => $comments,
-            'tags' => $tags
         ]);
     }
 
     public function getTagPosts($tag) {
         $user = Auth::user();
-
-        $tagService = new TagService();
-        $posts = $tagService->getTagPosts($tag);
-        $tagName = $tagService->getTag($tag)[0]->tag_name;
+        $posts = Tag::find($tag)->posts->where('status', '=', true)->sortByDesc('updated_at');
+        $tagName = Tag::find($tag)->name;
 
         return view('main', [
             'posts' => $posts,
@@ -81,30 +68,17 @@ class PostController extends Controller
 
     public function editPost($id) {
         $user = Auth::user();
-        $postService = new PostService();
-        $posts = $postService->getPost($id);
+        $post = Post::find($id);
 
         return view('edit', [
-            'post' => $posts[0],
-            'user' => $user
-        ]);
-    }
-
-    public function mainPage() {
-        $user = Auth::user() ?? '';
-        $postService = new PostService();
-        $posts = $postService->getPosts();
-
-        return view('main', [
-            'posts' => $posts,
+            'post' => $post,
             'user' => $user
         ]);
     }
 
     public function popular() {
         $user = Auth::user();
-        $postService = new PostService();
-        $posts = $postService->getPopularPosts();
+        $posts = Post::all()->where('status', '=', true)->sortByDesc('like_count');
 
         return view('main', [
             'posts' => $posts,
@@ -115,18 +89,19 @@ class PostController extends Controller
     public function submit(PostRequest $req) {
         $postService = new PostService();
         $postService->addPost($req);
-        return redirect()->route('main');
+        return redirect()->route('posts');
     }
 
     public function savePost($id, EditPostRequest $req) {
         $postService = new PostService();
         $postService->savePost($id, $req);
-        return redirect()->route('main');
+        return redirect()->route('posts');
     }
 
     public function publicPost($id) {
-        $postService = new PostService();
-        $postService->publicPost($id);
+        Post::find($id)->update([
+            'status' => true,
+        ]);
         return redirect()->route('main');
     }
 }

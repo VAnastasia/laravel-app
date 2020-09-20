@@ -24,13 +24,13 @@ class CommentRequest extends FormRequest
     public function rules()
     {
         return [
-            'text-comment' => 'required',
+            'text' => 'required',
         ];
     }
 
     public function messages() {
         return [
-            'text-comment.required' => 'Введите текст комментария'
+            'text.required' => 'Введите текст комментария'
         ];
     }
 }

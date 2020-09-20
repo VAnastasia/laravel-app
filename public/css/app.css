@@ -72,3 +72,22 @@ p.post__description {
   padding: 10px 0;
 }
 
+.pagination {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+}
+
+.pagination .page-item {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pagination .page-item.active {
+  background-color: #dddddd;
+}
+

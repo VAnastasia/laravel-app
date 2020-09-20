@@ -24,10 +24,10 @@
                                 <div class="post__author">
                                     <a class="post__author-link" href="#" title="Автор">
                                         <div class="post__avatar-wrapper">
-                                            <img class="post__author-avatar" src="/storage/{{$post->avatar}}" alt="Аватар пользователя">
+                                            <img class="post__author-avatar" src="/storage/{{$post->user->avatar}}" alt="Аватар пользователя">
                                         </div>
                                         <div class="post__info">
-                                            <b class="post__author-name">{{$post->name}}</b>
+                                            <b class="post__author-name">{{$post->user->name}}</b>
                                             <time class="post__time" datetime="{{$post->updated_at}}">{{date_format(date_create($post->updated_at), 'd M Y H:i')}}</time>
                                         </div>
                                     </a>
@@ -48,7 +48,7 @@
                                             <svg class="post__indicator-icon" width="19" height="17">
                                                 <use xlink:href="#icon-comment"></use>
                                             </svg>
-                                            <span>{{!$post->comment_count ? 0 : $post->comment_count}}</span>
+                                            <span>{{!$post->comments->count() ? 0 : $post->comments->count()}}</span>
                                             <span class="visually-hidden">количество комментариев</span>
                                         </a>
                                     </div>
@@ -59,6 +59,9 @@
                 @endforeach
 
             </div>
+            {{-- @if ($isMain ?? '')
+            <div>{{$posts->links()}}</div>
+            @endif --}}
         </div>
     </section>
 

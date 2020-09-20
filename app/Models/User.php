@@ -11,13 +11,17 @@ class User extends Authenticatable
 {
     use Notifiable;
 
+    public function posts () {
+        return $this->hasMany('App\Models\Post');
+    }
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'id', 'name', 'avatar', 'email', 'password',
+        'name', 'avatar', 'email', 'email_verified_at', 'password', 'remember_token'
     ];
 
     /**
